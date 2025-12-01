@@ -25,46 +25,56 @@ export const MessageList: React.FC<Props> = ({ messages, onWidgetResponse, isTyp
         const msgStyle = isBot ? theme.components.botMessage : theme.components.userMessage;
 
         return (
-          <div key={msg.id} className={`flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}>
-            <div className={`flex max-w-[85%] ${isBot ? 'flex-row' : 'flex-row-reverse'} gap-2`}>
-              {/* Avatar */}
-              <div 
-                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                style={{ backgroundColor: isBot ? theme.colors.neutral : theme.colors.primary }}
-              >
-                {isBot ? <Bot size={16} className="text-gray-600" /> : <User size={16} className="text-white" />}
-              </div>
+          <div
+  key={msg.id}
+  className={`flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}
+>
+  <div className="flex items-start gap-2 max-w-[80%]">
+    
+    {/* Avatar */}
+    {isBot && (
+      <div
+  className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+  style={{ backgroundColor: theme.colors.accent }}
+>
+  <Bot size={16} />
+</div>
 
-              {/* Message Content */}
-              <div className="flex flex-col gap-2">
-                {msg.content && (
-                  <div
-                    className="p-3 rounded-theme shadow-theme whitespace-pre-wrap"
-                    style={{
-                      backgroundColor: msgStyle.backgroundColor,
-                      color: msgStyle.textColor,
-                      borderTopLeftRadius: isBot ? 0 : undefined,
-                      borderTopRightRadius: !isBot ? 0 : undefined,
-                    }}
-                  >
-                    {msg.content}
-                  </div>
-                )}
-                
-                {/* Widget Area */}
-                {isBot && msg.type !== 'text' && (
-                  <div className="mt-1 animate-fadeIn">
-                    <WidgetRenderer 
-                      type={msg.type} 
-                      data={msg.widgetData} 
-                      onResponse={onWidgetResponse} 
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        );
+    )}
+
+    {/* Message Bubble */}
+    <div className="min-w-0 flex-1">
+      {msg.content && (
+        <div
+          className="p-3 rounded-lg break-words"
+          style={{
+            backgroundColor: msgStyle.backgroundColor,
+            color: msgStyle.textColor,
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word',
+          }}
+        >
+          {msg.content}
+        </div>
+      )}
+
+      {/* Widget (bot only) */}
+      {isBot && msg.type !== 'text' && (
+        <div className="mt-2 min-w-0">
+          <WidgetRenderer
+            type={msg.type}
+            data={msg.widgetData}
+            onResponse={onWidgetResponse}
+          />
+        </div>
+      )}
+    </div>
+
+    
+  </div>
+</div>
+
+        );;
       })}
       
       {isTyping && (

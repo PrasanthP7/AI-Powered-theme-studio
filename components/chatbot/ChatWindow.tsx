@@ -53,9 +53,9 @@ export const ChatWindow: React.FC = () => {
       {/* Header */}
       <div 
         className="px-4 py-3 flex items-center justify-between shadow-sm z-10"
-        style={{ 
-          backgroundColor: theme.components.header.backgroundColor,
-          color: theme.components.header.textColor 
+         style={{
+          backgroundColor: ' var(--theme-primary)',
+          color: 'var(--theme-header-text, var(--theme-text-inverse))'
         }}
       >
         <div className="flex items-center gap-2">
