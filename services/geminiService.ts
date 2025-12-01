@@ -3,7 +3,7 @@ import { Message, ThemeConfig } from "../types";
 import { DEFAULT_THEME } from "../constants";
 
 // WARNING: In a production app, never expose API keys on the client.
-const API_KEY = "";
+const API_KEY = "AIzaSyA1bIMRlUx7KQwE3tSj994jpexgiCDIwlM";
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
@@ -170,7 +170,7 @@ export const generateThemeFromImage = async (
             },
           },
           {
-            text: "Analyze this image. Create a UI theme JSON. Extract dominant colors. If image is dark, ensure text is light. Return JSON.",
+            text: "Analyze this image and extract colors to style a chatbot. \n\nRULES:\n1. Extract the MAIN/DOMINANT branding color -> Assign to 'primary' (for Header & Send Button).\n2. Extract a SECONDARY color -> Assign to 'secondary' (for Bot Reply background).\n3. Extract OTHER colors -> Assign to 'accent', 'neutral', 'surface' (for User Request & Widgets).\n4. Choose 'surface' based on background brightness: if dark -> light surface, if light -> darker surface. Never pure white.\n5. Return JSON matching the schema.",
           },
         ],
       },
@@ -192,24 +192,34 @@ export const generateThemeFromImage = async (
         ...themeJson.components,
         header: {
           ...DEFAULT_THEME.components.header,
+          backgroundColor: themeJson.colors?.primary || DEFAULT_THEME.colors.primary,
+          textColor: themeJson.colors?.textInverse || DEFAULT_THEME.colors.textInverse,
           ...themeJson.components?.header,
         },
         botMessage: {
           ...DEFAULT_THEME.components.botMessage,
+          backgroundColor: themeJson.colors?.secondary || DEFAULT_THEME.colors.secondary,
+          textColor: themeJson.colors?.textPrimary || DEFAULT_THEME.colors.textPrimary,
           ...themeJson.components?.botMessage,
-          accentColor:
-            themeJson.components?.botMessage?.accentColor ||
-            themeJson.components?.botMessage?.backgroundColor || // fallback
-            DEFAULT_THEME.components.botMessage.accentColor ||
-            DEFAULT_THEME.components.botMessage.backgroundColor, // final fallback
         },
         userMessage: {
           ...DEFAULT_THEME.components.userMessage,
+          backgroundColor: themeJson.colors?.surface || DEFAULT_THEME.colors.surface,
+          textColor: themeJson.colors?.textPrimary || DEFAULT_THEME.colors.textPrimary,
           ...themeJson.components?.userMessage,
         },
       },
       // Reset specific widget overrides on new generation to let global colors take over
-      widgets: DEFAULT_THEME.widgets,
+      widgets: {
+        ...DEFAULT_THEME.widgets,
+        general: {
+          ...DEFAULT_THEME.widgets.general,
+          backgroundColor: themeJson.colors?.surface || DEFAULT_THEME.colors.surface,
+          borderColor: themeJson.colors?.neutral || DEFAULT_THEME.colors.neutral,
+          textColor: themeJson.colors?.textPrimary || DEFAULT_THEME.colors.textPrimary,
+          accentColor: themeJson.colors?.accent || DEFAULT_THEME.colors.accent,
+        },
+      },
     };
   } catch (error) {
     console.error("Theme Gen Error:", error);

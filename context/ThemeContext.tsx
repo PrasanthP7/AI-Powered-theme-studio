@@ -58,6 +58,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     root.style.setProperty('--theme-accent', colors.accent);
     root.style.setProperty('--theme-neutral', colors.neutral);
     root.style.setProperty('--theme-surface', colors.surface);
+    root.style.setProperty('--theme-text-primary', colors.textPrimary || '#22232d');
+    root.style.setProperty('--theme-text-inverse', colors.textInverse || '#ffffff');
+    // Expose component-specific variables (header/footer etc.) so UI can bind to branding tokens
+    root.style.setProperty('--theme-header-bg', currentTheme.components?.header?.backgroundColor || colors.primary);
+    root.style.setProperty('--theme-header-text', currentTheme.components?.header?.textColor || (colors.textInverse || '#ffffff'));
     
     root.style.setProperty('--theme-radius', `${currentTheme.shapes.borderRadius}px`);
     root.style.setProperty('--theme-shadow', currentTheme.shapes.hasShadow ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none');

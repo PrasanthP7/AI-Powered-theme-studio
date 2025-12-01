@@ -25,7 +25,7 @@ export const DatePickerWidget: React.FC<Props> = ({ data, onResponse }) => {
   const dates = Array.from({ length: 6 }, (_, i) => addDays(today, i));
   const { theme } = useTheme();
 
-  const bgColor = getSafeSurface(theme.colors.surface);
+  const bgColor = getSafeSurface(theme.colors.surface)?theme.colors.surface:theme.colors.primary;
   const borderColor = isPureWhite(theme.colors.neutral) ? '#999' : theme.colors.neutral;
 
   const textColor =
