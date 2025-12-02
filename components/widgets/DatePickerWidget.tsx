@@ -25,22 +25,11 @@ export const DatePickerWidget: React.FC<Props> = ({ data, onResponse }) => {
   const dates = Array.from({ length: 6 }, (_, i) => addDays(today, i));
   const { theme } = useTheme();
 
-  const bgColor = getSafeSurface(theme.colors.surface)?theme.colors.surface:theme.colors.primary;
-  const borderColor = isPureWhite(theme.colors.neutral) ? '#999' : theme.colors.neutral;
-
-  const textColor =
-    theme.components.botMessage.textColor ||
-    theme.colors.textInverse ||
-    '#222';
-
-  const hoverBg =
-    theme.components.botMessage.backgroundColor ||
-    theme.colors.accent ||
-    '#2977e6';
-
-  const hoverText =
-    theme.components.botMessage.textColor ||
-    '#fff';
+  const bgColor = theme.chat_detail?.agent_msg_bg_color || '#f3f4f6';
+  const textColor = theme.chat_detail?.agent_msg_txt_color || '#1f2937';
+  const borderColor = theme.chat_detail?.quickreply_menu_border_color || '#e5e7eb';
+  const hoverBg = theme.chat_detail?.submit_btn_bg_color || '#2977e6';
+  const hoverText = theme.chat_detail?.submit_btn_text_color || '#ffffff';
 
   return (
     <div

@@ -12,18 +12,10 @@ export const FileUploadWidget: React.FC<Props> = ({ data, onResponse }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { theme } = useTheme();
 
-  const style = { ...theme.widgets.general, ...theme.widgets.file_upload };
-
-  const accent =
-    theme.components.botMessage.accentColor ||
-    theme.components.botMessage.backgroundColor ||
-    style.accentColor ||
-    theme.colors.accent;
-
-  const textColor =
-    theme.components.botMessage.textColor ||
-    style.textColor ||
-    theme.colors.textPrimary;
+  const bgColor = theme.chat_detail?.agent_msg_bg_color || theme.components?.botMessage?.backgroundColor || '#f3f4f6';
+  const textColor = theme.chat_detail?.agent_msg_txt_color || theme.components?.botMessage?.textColor || '#1f2937';
+  const borderColor = theme.chat_detail?.quickreply_menu_border_color || theme.colors?.neutral || '#e5e7eb';
+  const accent = theme.chat_detail?.submit_btn_bg_color || theme.colors?.accent || '#2977e6';
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,7 +29,7 @@ export const FileUploadWidget: React.FC<Props> = ({ data, onResponse }) => {
   return (
     <div
       className="p-4 rounded-theme shadow-theme w-full max-w-xs border"
-      style={{ backgroundColor: style.backgroundColor, borderColor: style.borderColor }}
+      style={{ backgroundColor: bgColor, borderColor: borderColor }}
     >
       <h4 className="text-sm font-semibold mb-3" style={{ color: textColor }}>
         {data.title || "Upload Document"}

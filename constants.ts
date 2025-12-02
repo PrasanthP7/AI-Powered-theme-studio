@@ -50,5 +50,26 @@ export const DEFAULT_THEME: ThemeConfig = {
     quickReplies: {},
     form: {},
     dropdown: {}
+  },
+
+  // New API format properties
+  header_bg_color: "#2977e6",
+  header_text_color: "#ffffff",
+  quickreply_btn_bg_color: "#ffffff",
+  quickreply_btn_txt_color: "#2977e6",
+  chat_detail: {
+    submit_btn_text_color: "#ffffff",
+    submit_btn_bg_color: "#2977e6",
+    agent_msg_bg_color: "#f3f4f6",
+    user_msg_bg_color: "#2977e6",
+    user_msg_txt_color: "#ffffff",
+    agent_msg_txt_color: "#1f2937",
+    quickreply_btn_txt_color: "#2977e6",
+    quickreply_btn_bg_color: "#ffffff",
+    quickreply_btn_border_color: "#e5e7eb",
+    list_text_color: "#1f2937",
+    list_bg_color: "#ffffff",
+    quickreply_menu_border_color: "#e5e7eb"
   }
 };
+

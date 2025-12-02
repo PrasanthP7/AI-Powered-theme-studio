@@ -56,8 +56,8 @@ export const ThemeEditor: React.FC = () => {
     <div className="w-full md:w-96 bg-white border-r border-gray-200 flex flex-col h-full shadow-xl z-20">
       <div className="p-4 border-b border-gray-100 bg-gray-50">
         <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-          <Rocket className="text-blue-600" />
-          Theme Studio
+          <Rocket className="text-red-600" />
+          Kapture Studio
         </h2>
         
         {/* Tabs */}
@@ -119,17 +119,18 @@ export const ThemeEditor: React.FC = () => {
               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Detected Palette</h3>
               <div className="grid grid-cols-5 gap-2">
                 {[
-                  { label: 'Pri', color: theme.colors.primary },
-                  { label: 'Sec', color: theme.colors.secondary },
-                  { label: 'Acc', color: theme.colors.accent },
-                  { label: 'Neu', color: theme.colors.neutral },
-                  { label: 'Bg', color: theme.colors.surface },
+                  { label: 'Hdr', color: theme.header_bg_color },
+                  { label: 'Btn', color: theme.chat_detail?.submit_btn_bg_color },
+                  { label: 'Bot', color: theme.chat_detail?.agent_msg_bg_color },
+                  { label: 'User', color: theme.chat_detail?.user_msg_bg_color },
+                  //{ label: 'QR', color: theme.chat_detail?.quickreply_btn_bg_color || theme.quickreply_btn_bg_color },
                 ].map((c) => (
                   <div key={c.label} className="flex flex-col items-center gap-1">
                     <div 
                       className="w-10 h-10 rounded-full shadow-sm border border-gray-100 ring-2 ring-transparent hover:ring-blue-200 transition-all" 
-                      style={{ backgroundColor: c.color }}
+                      style={{ backgroundColor: c.color || '#cccccc' }}
                     ></div>
+                    <span className="text-[10px] text-gray-500">{c.label}</span>
                   </div>
                 ))}
               </div>

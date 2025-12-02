@@ -44,14 +44,36 @@ export interface ThemeConfig {
     form?: ComponentStyle;
     dropdown?: ComponentStyle;
   };
+
+  // New API format properties
+  header_bg_color?: string;
+  header_text_color?: string;
+  quickreply_btn_bg_color?: string;
+  quickreply_btn_txt_color?: string;
+  chat_detail?: {
+    submit_btn_text_color?: string;
+    submit_btn_bg_color?: string;
+    agent_msg_bg_color?: string;
+    user_msg_bg_color?: string;
+    user_msg_txt_color?: string;
+    agent_msg_txt_color?: string;
+    quickreply_btn_txt_color?: string;
+    quickreply_btn_bg_color?: string;
+    quickreply_btn_border_color?: string;
+    list_text_color?: string;
+    list_bg_color?: string;
+    quickreply_menu_border_color?: string;
+    [key: string]: any;
+  };
+  [key: string]: any; // Allow other fields from API
 }
 
-export type WidgetType = 
-  | 'text' 
-  | 'date_picker' 
-  | 'form' 
-  | 'carousel' 
-  | 'quick_replies' 
+export type WidgetType =
+  | 'text'
+  | 'date_picker'
+  | 'form'
+  | 'carousel'
+  | 'quick_replies'
   | 'dropdown'
   | 'feedback'
   | 'file_upload';
