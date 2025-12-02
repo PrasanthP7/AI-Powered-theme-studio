@@ -12,18 +12,10 @@ export const FormWidget: React.FC<Props> = ({ data, onResponse }) => {
   const [values, setValues] = useState<Record<string, string>>({});
   const { theme } = useTheme();
 
-  const style = { ...theme.widgets.general, ...theme.widgets.form };
-
-  const accent =
-    theme.components.botMessage.accentColor ||
-    theme.components.botMessage.backgroundColor ||
-    style.accentColor ||
-    theme.colors.accent;
-
-  const textColor =
-    theme.components.botMessage.textColor ||
-    style.textColor ||
-    theme.colors.textPrimary;
+  const bgColor = theme.chat_detail?.agent_msg_bg_color || theme.components?.botMessage?.backgroundColor || '#f3f4f6';
+  const textColor = theme.chat_detail?.agent_msg_txt_color || theme.components?.botMessage?.textColor || '#1f2937';
+  const borderColor = theme.chat_detail?.quickreply_menu_border_color || theme.colors?.neutral || '#e5e7eb';
+  const accent = theme.chat_detail?.submit_btn_bg_color || theme.colors?.accent || '#2977e6';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,22 +26,22 @@ export const FormWidget: React.FC<Props> = ({ data, onResponse }) => {
     <form
       onSubmit={handleSubmit}
       className="p-4 rounded-theme shadow-theme space-y-3 w-full max-w-xs border"
-      style={{ backgroundColor: style.backgroundColor, borderColor: style.borderColor }}
+      style={{ backgroundColor: bgColor, borderColor: borderColor }}
     >
-      <h4 className="text-sm font-bold mb-2" style={{ color: style.textColor }}>
+      <h4 className="text-sm font-bold mb-2" style={{ color: textColor }}>
         {data.title || "Please fill details"}
       </h4>
 
       {fields.map((field) => (
         <div key={field.name}>
-          <label className="block text-xs font-medium" style={{ color: style.textColor }}>
+          <label className="block text-xs font-medium" style={{ color: textColor }}>
             {field.label}
           </label>
           <input
             type={field.type}
             placeholder={field.placeholder}
             className="mt-1 block w-full rounded border p-1.5 text-sm"
-            style={{ borderColor: theme.colors.neutral }}
+            style={{ borderColor: borderColor }}
             onChange={(e) => setValues({ ...values, [field.name]: e.target.value })}
             required
           />
@@ -61,7 +53,7 @@ export const FormWidget: React.FC<Props> = ({ data, onResponse }) => {
         className="w-full py-1.5 rounded text-sm font-semibold transition-colors"
         style={{
           backgroundColor: accent,
-          color: textColor,
+          color: '#ffffff',
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.filter = "brightness(1.1)";

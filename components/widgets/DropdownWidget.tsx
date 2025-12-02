@@ -11,14 +11,16 @@ export const DropdownWidget: React.FC<Props> = ({ data, onResponse }) => {
   const options = data.options || [];
   const { theme } = useTheme();
 
-  const style = { ...theme.widgets.general, ...theme.widgets.dropdown };
+  const bgColor = theme.chat_detail?.list_bg_color || '#ffffff';
+  const textColor = theme.chat_detail?.list_text_color || '#000000';
+  const borderColor = theme.chat_detail?.quickreply_menu_border_color || '#e5e7eb';
 
   return (
     <div
       className="p-3 rounded-theme shadow-theme w-full max-w-xs border"
-      style={{ backgroundColor: style.backgroundColor, borderColor: style.borderColor }}
+      style={{ backgroundColor: bgColor, borderColor: borderColor }}
     >
-      <label className="block text-xs font-medium mb-1" style={{ color: style.textColor }}>
+      <label className="block text-xs font-medium mb-1" style={{ color: textColor }}>
         {data.title || "Choose an option"}
       </label>
 
@@ -38,8 +40,9 @@ export const DropdownWidget: React.FC<Props> = ({ data, onResponse }) => {
         }}
         className="block w-full text-sm rounded-md shadow-sm p-2 border"
         style={{
-          borderColor: theme.colors.neutral,
-          color: style.textColor,
+          borderColor: borderColor,
+          color: textColor,
+          backgroundColor: bgColor
         }}
         defaultValue=""
       >

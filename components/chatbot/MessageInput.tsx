@@ -27,11 +27,7 @@ export const MessageInput: React.FC<Props> = ({ onSend, disabled }) => {
 
   return (
     <div 
-      className="p-4 border-t"
-      style={{ 
-        backgroundColor: theme.components.footer.backgroundColor,
-        borderColor: theme.components.footer.borderColor
-      }}
+      className="p-4 border-t bg-white"
     >
       <div className="flex items-center gap-2">
         <input
@@ -46,7 +42,11 @@ export const MessageInput: React.FC<Props> = ({ onSend, disabled }) => {
         <button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
-          className="p-3 bg-primary text-white rounded-theme hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-theme"
+          className="p-3 rounded-theme hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-theme"
+          style={{
+            backgroundColor: theme.chat_detail?.submit_btn_bg_color || '#2977e6',
+            color: theme.chat_detail?.submit_btn_text_color || '#ffffff'
+          }}
           aria-label="Send message"
         >
           <SendHorizontal size={20} />

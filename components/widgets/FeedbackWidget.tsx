@@ -12,13 +12,10 @@ export const FeedbackWidget: React.FC<Props> = ({ data, onResponse }) => {
   const [rating, setRating] = useState(0);
   const { theme } = useTheme();
 
-  const starColor =
-    theme.components.botMessage.textColor || // nice contrast option
-    theme.colors.accent;
-
-  const bgColor =
-    theme.components.botMessage.backgroundColor ||
-    theme.colors.surface;
+  const starColor = theme.chat_detail?.submit_btn_bg_color || theme.colors?.accent || '#2977e6';
+  const bgColor = theme.chat_detail?.agent_msg_bg_color || theme.components?.botMessage?.backgroundColor || '#f3f4f6';
+  const textColor = theme.chat_detail?.agent_msg_txt_color || theme.components?.botMessage?.textColor || '#1f2937';
+  const borderColor = theme.chat_detail?.quickreply_menu_border_color || theme.colors?.neutral || '#e5e7eb';
 
   const handleRate = (r: number) => {
     setRating(r);
@@ -30,13 +27,13 @@ export const FeedbackWidget: React.FC<Props> = ({ data, onResponse }) => {
       className="p-4 rounded-theme shadow-theme w-full max-w-xs text-center"
       style={{
         backgroundColor: bgColor,
-        borderColor: theme.colors.neutral,
+        borderColor: borderColor,
         borderWidth: '1px',
       }}
     >
       <h4
         className="text-sm font-semibold mb-3"
-        style={{ color: theme.components.botMessage.textColor }}
+        style={{ color: textColor }}
       >
         {data.title || 'How was your experience?'}
       </h4>

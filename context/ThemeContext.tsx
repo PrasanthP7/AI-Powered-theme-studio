@@ -32,10 +32,32 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setPreviewThemeState(theme);
   };
 
-  const deployTheme = () => {
+  const deployTheme = async () => {
     if (previewTheme) {
       setActiveTheme(previewTheme);
       localStorage.setItem('chatbot_theme_config', JSON.stringify(previewTheme));
+      
+      try {
+        const response = await fetch('https://6782d852f90d.ngrok-free.app/api/json/1', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: 1,
+            data: previewTheme
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log("Theme deployed successfully to API");
+      } catch (error) {
+        console.error("Failed to deploy theme to API:", error);
+        // Optional: Add UI feedback here if needed
+      }
+
       setPreviewThemeState(null);
     }
   };
@@ -51,21 +73,28 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Apply CSS variables to root
   useEffect(() => {
     const root = document.documentElement;
-    const colors = currentTheme.colors;
+    const colors = currentTheme.colors || {};
+    const shapes = currentTheme.shapes || { borderRadius: 8, hasShadow: true };
     
-    root.style.setProperty('--theme-primary', colors.primary);
-    root.style.setProperty('--theme-secondary', colors.secondary);
-    root.style.setProperty('--theme-accent', colors.accent);
-    root.style.setProperty('--theme-neutral', colors.neutral);
-    root.style.setProperty('--theme-surface', colors.surface);
-    root.style.setProperty('--theme-text-primary', colors.textPrimary || '#22232d');
-    root.style.setProperty('--theme-text-inverse', colors.textInverse || '#ffffff');
+    // Only set CSS variables if colors object exists (old format)
+    if (currentTheme.colors) {
+      root.style.setProperty('--theme-primary', colors.primary || '#2977e6');
+      root.style.setProperty('--theme-secondary', colors.secondary || '#d6813d');
+      root.style.setProperty('--theme-accent', colors.accent || '#2977e6');
+      root.style.setProperty('--theme-neutral', colors.neutral || '#cdcdd0');
+      root.style.setProperty('--theme-surface', colors.surface || '#ffffff');
+      root.style.setProperty('--theme-text-primary', colors.textPrimary || '#22232d');
+      root.style.setProperty('--theme-text-inverse', colors.textInverse || '#ffffff');
+    }
+    
     // Expose component-specific variables (header/footer etc.) so UI can bind to branding tokens
-    root.style.setProperty('--theme-header-bg', currentTheme.components?.header?.backgroundColor || colors.primary);
-    root.style.setProperty('--theme-header-text', currentTheme.components?.header?.textColor || (colors.textInverse || '#ffffff'));
+    if (currentTheme.components?.header) {
+      root.style.setProperty('--theme-header-bg', currentTheme.components.header.backgroundColor || colors.primary || '#2977e6');
+      root.style.setProperty('--theme-header-text', currentTheme.components.header.textColor || colors.textInverse || '#ffffff');
+    }
     
-    root.style.setProperty('--theme-radius', `${currentTheme.shapes.borderRadius}px`);
-    root.style.setProperty('--theme-shadow', currentTheme.shapes.hasShadow ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none');
+    root.style.setProperty('--theme-radius', `${shapes.borderRadius}px`);
+    root.style.setProperty('--theme-shadow', shapes.hasShadow ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none');
   }, [currentTheme]);
 
   return (
