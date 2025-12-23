@@ -3,7 +3,7 @@ import { Message, ThemeConfig } from "../types";
 import { DEFAULT_THEME } from "../constants";
 
 // WARNING: In a production app, never expose API keys on the client.
-const API_KEY = "AIzaSyDPYqw3LksHaJAxZptOJILiWtKuKDTC1bk";
+const API_KEY = "AIzaSyDHQFHPP76-7uFNDVLv4vAfp6ONyxcgAkk";
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 
