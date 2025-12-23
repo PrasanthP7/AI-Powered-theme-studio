@@ -36,13 +36,26 @@ export const ThemeEditor: React.FC = () => {
 
   const handleColorChange = (section: string, key: string, value: string) => {
     const newTheme: any = { ...theme };
+    
     if (section === 'colors') {
+      // Old format
+      if (!newTheme.colors) newTheme.colors = {};
       newTheme.colors[key] = value;
+    } else if (section === 'chat_detail') {
+      // New API format - chat_detail object
+      if (!newTheme.chat_detail) newTheme.chat_detail = {};
+      newTheme.chat_detail[key] = value;
+    } else if (section === 'header_bg_color' || section === 'header_text_color') {
+      // New API format - top level properties
+      newTheme[section] = value;
     } else if (section.startsWith('widgets.')) {
-        const widgetKey = section.split('.')[1];
-        if(!newTheme.widgets[widgetKey]) newTheme.widgets[widgetKey] = {};
-        newTheme.widgets[widgetKey][key] = value;
+      // Old format - widgets
+      const widgetKey = section.split('.')[1];
+      if (!newTheme.widgets) newTheme.widgets = {};
+      if (!newTheme.widgets[widgetKey]) newTheme.widgets[widgetKey] = {};
+      newTheme.widgets[widgetKey][key] = value;
     }
+    
     setPreviewTheme(newTheme);
   };
 
@@ -57,7 +70,7 @@ export const ThemeEditor: React.FC = () => {
       <div className="p-4 border-b border-gray-100 bg-gray-50">
         <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
           <Rocket className="text-red-600" />
-          Kapture Studio
+          Kapture Ai Studio
         </h2>
         
         {/* Tabs */}
@@ -141,40 +154,72 @@ export const ThemeEditor: React.FC = () => {
         {activeTab === 'manual' && (
           <div className="space-y-6 animate-fadeIn">
             <div className="space-y-4">
-               <h3 className="text-sm font-bold text-gray-700 border-b pb-1">Global Colors</h3>
+               <h3 className="text-sm font-bold text-gray-700 border-b pb-1">Header Colors</h3>
                <div className="grid grid-cols-2 gap-4">
-                 <ColorInput label="Primary" value={theme.colors.primary} onChange={(v) => handleColorChange('colors', 'primary', v)} />
-                 <ColorInput label="Secondary" value={theme.colors.secondary} onChange={(v) => handleColorChange('colors', 'secondary', v)} />
-                 <ColorInput label="Surface" value={theme.colors.surface} onChange={(v) => handleColorChange('colors', 'surface', v)} />
-                 <ColorInput label="Neutral" value={theme.colors.neutral} onChange={(v) => handleColorChange('colors', 'neutral', v)} />
+                 <ColorInput 
+                   label="Header Bg" 
+                   value={theme.header_bg_color || '#2977e6'} 
+                   onChange={(v) => handleColorChange('header_bg_color', '', v)} 
+                 />
+                 <ColorInput 
+                   label="Header Text" 
+                   value={theme.header_text_color || '#ffffff'} 
+                   onChange={(v) => handleColorChange('header_text_color', '', v)} 
+                 />
                </div>
             </div>
 
-            {/* <div className="space-y-4">
-               <h3 className="text-sm font-bold text-gray-700 border-b pb-1">Widget Overrides</h3>
-               <div className="space-y-3">
-                 <div className="text-xs text-gray-500 italic">Customize specific widgets</div>
-                  */}
-                 {/* Date Picker Override */}
-                 {/* <div className="bg-gray-50 p-2 rounded border">
-                    <span className="text-xs font-bold block mb-2">Date Picker</span>
-                    <div className="grid grid-cols-2 gap-2">
-                       <ColorInput label="Bg" value={theme.widgets.datePicker?.backgroundColor || theme.widgets.general.backgroundColor || '#fff'} onChange={(v) => handleColorChange('widgets.datePicker', 'backgroundColor', v)} />
-                       <ColorInput label="Text" value={theme.widgets.datePicker?.textColor || theme.widgets.general.textColor || '#000'} onChange={(v) => handleColorChange('widgets.datePicker', 'textColor', v)} />
-                    </div>
-                 </div> */}
-
-                 {/* Carousel Override */}
-                 {/* <div className="bg-gray-50 p-2 rounded border">
-                    <span className="text-xs font-bold block mb-2">Carousel</span>
-                     <div className="grid grid-cols-2 gap-2">
-                       <ColorInput label="Bg" value={theme.widgets.carousel?.backgroundColor || theme.widgets.general.backgroundColor || '#fff'} onChange={(v) => handleColorChange('widgets.carousel', 'backgroundColor', v)} />
-                       <ColorInput label="Text" value={theme.widgets.carousel?.textColor || theme.widgets.general.textColor || '#000'} onChange={(v) => handleColorChange('widgets.carousel', 'textColor', v)} />
-                    </div>
-                 </div>
-
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold text-gray-700 border-b pb-1">Message Colors</h3>
+               <div className="grid grid-cols-2 gap-4">
+                 <ColorInput 
+                   label="Bot Msg Bg" 
+                   value={theme.chat_detail?.agent_msg_bg_color || '#f3f4f6'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'agent_msg_bg_color', v)} 
+                 />
+                 <ColorInput 
+                   label="Bot Msg Text" 
+                   value={theme.chat_detail?.agent_msg_txt_color || '#1f2937'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'agent_msg_txt_color', v)} 
+                 />
+                 <ColorInput 
+                   label="User Msg Bg" 
+                   value={theme.chat_detail?.user_msg_bg_color || '#2977e6'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'user_msg_bg_color', v)} 
+                 />
+                 <ColorInput 
+                   label="User Msg Text" 
+                   value={theme.chat_detail?.user_msg_txt_color || '#ffffff'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'user_msg_txt_color', v)} 
+                 />
                </div>
-            </div> */}
+            </div>
+
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold text-gray-700 border-b pb-1">Button Colors</h3>
+               <div className="grid grid-cols-2 gap-4">
+                 <ColorInput 
+                   label="Submit Btn Bg" 
+                   value={theme.chat_detail?.submit_btn_bg_color || '#2977e6'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'submit_btn_bg_color', v)} 
+                 />
+                 <ColorInput 
+                   label="Submit Btn Text" 
+                   value={theme.chat_detail?.submit_btn_text_color || '#ffffff'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'submit_btn_text_color', v)} 
+                 />
+                 <ColorInput 
+                   label="Quick Reply Bg" 
+                   value={theme.chat_detail?.quickreply_btn_bg_color || '#ffffff'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'quickreply_btn_bg_color', v)} 
+                 />
+                 <ColorInput 
+                   label="Quick Reply Text" 
+                   value={theme.chat_detail?.quickreply_btn_txt_color || '#2977e6'} 
+                   onChange={(v) => handleColorChange('chat_detail', 'quickreply_btn_txt_color', v)} 
+                 />
+               </div>
+            </div>
           </div>
         )}
 
